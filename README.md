@@ -2,6 +2,19 @@
 
 全栈博客，运行在 Cloudflare Workers。D1 存文章与页面，KV 存管理员 session 和站点配置。
 
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/hekuo5310/blog)
+
+## 一键部署（Deploy to Cloudflare）
+
+点击上方按钮即可在**自己的 Cloudflare 账号**上部署一份：
+
+1. 登录 Cloudflare，按钮会引导你选择账号、设置项目名
+2. 填写管理员账号（`ADMIN_USER` / `ADMIN_PASS`）——这是唯一必填项，其余变量均可选
+3. Cloudflare 自动完成：clone 仓库 → 创建 D1 数据库、KV 命名空间、R2 存储桶并绑定 → 执行数据库迁移 → 构建部署
+4. 部署完成后访问分配的 `*.workers.dev` 域名，`/admin/login` 进入后台
+
+无需修改任何代码或配置；可选变量（AI 总结、Giscus 评论）在部署配置页按需填写。
+
 ## 功能
 
 - 公开前端：文章列表、站内搜索、文章详情、正文右侧章节导航、阅读进度与阅读时间、复制文章链接、RSS 订阅、Giscus 评论
@@ -96,8 +109,19 @@ OPENAI_API_KEY=sk-...
 ### 7. 部署
 
 ```bash
-wrangler deploy
+npm run deploy
 ```
+
+`deploy` 脚本会先执行数据库迁移（`wrangler d1 migrations apply DB --remote`）再部署 Worker，幂等，重复执行安全。
+
+> **已有部署升级到本版本**：如果你之前手动执行过 0001-0010 的 SQL（`wrangler d1 execute` 方式），`d1_migrations` 表中没有记录，`npm run deploy` 会尝试重跑这些迁移而报错。首次升级时先手动标记已执行的迁移：
+>
+> ```bash
+> wrangler d1 execute blog-db --remote --command "CREATE TABLE IF NOT EXISTS d1_migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, applied_at TEXT NOT NULL DEFAULT (datetime('now')))"
+> wrangler d1 execute blog-db --remote --command "INSERT OR IGNORE INTO d1_migrations (name) VALUES ('0001_init'),('0002_users'),('0003_pages'),('0004_ai_summary'),('0005_post_activities'),('0006_remove_user_system'),('0007_post_license'),('0008_custom_license'),('0009_page_views'),('0010_page_view_country')"
+> ```
+>
+> 标记完成后 `npm run deploy` 即可正常增量执行后续迁移。
 
 ## 本地开发
 
