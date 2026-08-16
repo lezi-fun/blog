@@ -1,23 +1,19 @@
-# 一键部署（Deploy to Cloudflare 按钮）时，部署配置页只要求填写下面两个必填项。
-# 可选变量默认值都是 null（留空 / undefined / "null" 字符串同样视为未配置），
-# 对应功能自动不启用；启用方式见 README「一键部署」小节。
+# 一键部署（Deploy to Cloudflare 按钮）时，部署配置页只要求填写 ADMIN_USER / ADMIN_PASS。
+# 可选变量默认值 null：Cloudflare 会将其视为"无此变量"，配置页不会要求填写，
+# 代码端 isConfigured() 同样识别 null = 未配置，对应功能自动禁用。
+# 启用可选功能：部署后 wrangler secret put 设置对应变量（见 README）。
 
 # 必填：博客后台管理员账号（登录 /admin 用）
 ADMIN_USER=admin
 ADMIN_PASS=change-me-to-a-strong-password
 
-# ---- 可选配置（默认 null = 不启用；部署后再启用）----
-# AI 文章总结（OpenAI 协议兼容，如 DeepSeek）：
-#   wrangler secret put OPENAI_API_KEY
-# OPENAI_API_KEY=null
+# 可选：AI 文章总结（OpenAI 协议兼容，如 DeepSeek）；配置后保存文章时自动生成总结
+OPENAI_API_KEY=null
 
-# Giscus 评论（GitHub Discussions，全部设置后启用）：
-#   wrangler secret put GISCUS_REPO_ID
-#   wrangler secret put GISCUS_CATEGORY
-#   wrangler secret put GISCUS_CATEGORY_ID
-# GISCUS_REPO=null
-# GISCUS_REPO_ID=null
-# GISCUS_CATEGORY=null
-# GISCUS_CATEGORY_ID=null
-# GISCUS_MAPPING=null
-# GISCUS_LANG=null
+# 可选：Giscus 评论（GitHub Discussions）；全部配置后启用评论
+GISCUS_REPO=null
+GISCUS_REPO_ID=null
+GISCUS_CATEGORY=null
+GISCUS_CATEGORY_ID=null
+GISCUS_MAPPING=null
+GISCUS_LANG=null
