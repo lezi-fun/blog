@@ -13,7 +13,7 @@
 3. Cloudflare 自动完成：clone 仓库 → 创建 D1 数据库、KV 命名空间、R2 存储桶并绑定 → 执行数据库迁移 → 构建部署
 4. 部署完成后访问分配的 `*.workers.dev` 域名，`/admin/login` 进入后台
 
-无需修改任何代码或配置，只需要管理员账号密码即可运行。可选功能部署后再启用（不配置也不影响使用）：
+无需修改任何代码或配置，只需要管理员账号密码即可运行。可选功能（AI 总结、Giscus 评论）默认不启用——**不需要的话保留当前内容即可，无需任何操作**；需要时部署后再启用：
 
 ```bash
 # AI 文章总结（OpenAI 协议兼容，如 DeepSeek）
@@ -25,7 +25,7 @@ wrangler secret put GISCUS_CATEGORY
 wrangler secret put GISCUS_CATEGORY_ID
 ```
 
-> 说明：Deploy to Cloudflare 配置页只会要求填写 `.dev.vars.example` 中**未注释**的条目（即必填的管理员账号）；可选变量全部以注释形式列出，不会被要求填写。
+> 说明：Deploy to Cloudflare 配置页只会要求填写 `.dev.vars.example` 中声明的必填项（管理员账号）；可选变量未在配置中声明，不会被要求填写，也不需要改动。
 
 ## 功能
 
