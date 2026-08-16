@@ -1,20 +1,22 @@
-# 一键部署（Deploy to Cloudflare 按钮）时，部署配置页会提示填写下面这些值。
-# 也可以部署完成后用 wrangler secret put 设置。
+# 一键部署（Deploy to Cloudflare 按钮）时，部署配置页只要求填写下面两个必填项。
+# 可选功能（AI 总结、Giscus 评论）部署后按 README 配置即可，不影响博客正常使用。
 
 # 必填：博客后台管理员账号（登录 /admin 用）
 ADMIN_USER=admin
 ADMIN_PASS=change-me-to-a-strong-password
 
-# 可选：AI 文章总结。留空则文章不生成 AI 总结。
-# 使用 OpenAI 协议兼容接口（DeepSeek / Moonshot / 本地部署等），
-# 接口地址与模型在 wrangler.jsonc 的 vars 中配置。
-OPENAI_API_KEY=
+# ---- 以下为可选配置示例（注释掉 = 不要求填写，部署后再启用）----
+# AI 文章总结（OpenAI 协议兼容，如 DeepSeek）：
+#   wrangler secret put OPENAI_API_KEY
+# OPENAI_API_KEY=sk-...
 
-# 可选：Giscus 评论（GitHub Discussions）。全部留空则禁用评论。
-# 参数在 https://giscus.app 生成。
-GISCUS_REPO=
-GISCUS_REPO_ID=
-GISCUS_CATEGORY=
-GISCUS_CATEGORY_ID=
-GISCUS_MAPPING=pathname
-GISCUS_LANG=zh-CN
+# Giscus 评论（GitHub Discussions，全部设置后启用）：
+#   wrangler secret put GISCUS_REPO_ID
+#   wrangler secret put GISCUS_CATEGORY
+#   wrangler secret put GISCUS_CATEGORY_ID
+# GISCUS_REPO=owner/repo
+# GISCUS_REPO_ID=
+# GISCUS_CATEGORY=
+# GISCUS_CATEGORY_ID=
+# GISCUS_MAPPING=pathname
+# GISCUS_LANG=zh-CN

@@ -9,11 +9,23 @@
 点击上方按钮即可在**自己的 Cloudflare 账号**上部署一份：
 
 1. 登录 Cloudflare，按钮会引导你选择账号、设置项目名
-2. 填写管理员账号（`ADMIN_USER` / `ADMIN_PASS`）——这是唯一必填项，其余变量均可选
+2. 填写管理员账号（`ADMIN_USER` / `ADMIN_PASS`）——**唯一必填项**
 3. Cloudflare 自动完成：clone 仓库 → 创建 D1 数据库、KV 命名空间、R2 存储桶并绑定 → 执行数据库迁移 → 构建部署
 4. 部署完成后访问分配的 `*.workers.dev` 域名，`/admin/login` 进入后台
 
-无需修改任何代码或配置；可选变量（AI 总结、Giscus 评论）在部署配置页按需填写。
+无需修改任何代码或配置，只需要管理员账号密码即可运行。可选功能部署后再启用（不配置也不影响使用）：
+
+```bash
+# AI 文章总结（OpenAI 协议兼容，如 DeepSeek）
+wrangler secret put OPENAI_API_KEY
+
+# Giscus 评论（GitHub Discussions）
+wrangler secret put GISCUS_REPO_ID
+wrangler secret put GISCUS_CATEGORY
+wrangler secret put GISCUS_CATEGORY_ID
+```
+
+> 说明：Deploy to Cloudflare 配置页只会要求填写 `.dev.vars.example` 中**未注释**的条目（即必填的管理员账号）；可选变量全部以注释形式列出，不会被要求填写。
 
 ## 功能
 
